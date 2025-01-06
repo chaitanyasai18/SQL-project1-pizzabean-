@@ -93,3 +93,8 @@ select avg(quantity) from
 (select o.order_date,sum(od.quantity) as quantity from orders o 
 left join order_details od on o.order_id = od.order_id 
 group by o.order_date) as order_quantity; 
+ 
+# --TOP 3 MOST ORDERED PIZZA TYPES BASED ON REVENUE
+select p.pizza_type_id,sum(p.price*od.quantity) as revenue from pizzas p 
+left join order_details od on p.pizza_id=od.pizza_id 
+group by p.pizza_type_id order by revenue desc limit 3;
