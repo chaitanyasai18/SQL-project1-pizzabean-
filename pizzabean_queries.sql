@@ -79,4 +79,17 @@ LIMIT 5;
 select p.size,sum(od.quantity) as sum from pizzas p,order_details od where p.pizza_id = od.pizza_id 
 group by p.size order by sum desc limit 1;
 
+# --TOTAL QUANTITY OF EACH PIZZA CATEGORY ORDERED
+select pt.category,sum(od.quantity) as quantity from pizzas p left join order_details od 
+on p.pizza_id = od.pizza_id left join pizza_types pt on p.pizza_type_id = pt.pizza_type_id
+group by pt.category order by quantity desc;
 
+# --ORDERS BY HOUR OF THE DAY
+select hour(order_time),count(order_id) as quantity from orders 
+group by hour(order_time);
+
+# --AVERAGE NO. OF PIZZAS ORDERED PER DAY
+select avg(quantity) from 
+(select o.order_date,sum(od.quantity) as quantity from orders o 
+left join order_details od on o.order_id = od.order_id 
+group by o.order_date) as order_quantity; 
